@@ -1,0 +1,29 @@
+<header class="chat-header">
+    <div class="logo-container"><img src="assets/logoycyw.png" alt="logo" ></div>
+    <span>Real time chat POC Angular & spring boot</span>
+    <button *ngIf="!chatStarted" (click)="startChat()">
+      Démarrer le chat
+    </button>
+</header>
+<div class="chat-container">
+  <div *ngIf="chatStarted && !usernameValidated" class="center">
+    <p>Entrez votre Nom</p>
+    <input type="text" placeholder="Nom" [(ngModel)]="sender" (keyup.enter)="validateUsername()" />
+    <button (click)="validateUsername()">Valider</button>
+  </div>
+  <div *ngIf="usernameValidated" class="chat-box">
+    <div class="disconnect-container">
+      <button class="disconnect" (click)="disconnect()">X</button>
+    </div>
+    <div class="messages">
+      <div class="message" [class.self]="message.sender === sender" *ngFor="let message of webSocketService.messages">
+        <span class="sender">{{ message.sender }}</span>
+        <span class="content">{{ message.content }}</span>
+      </div>
+    </div>
+    <div class="input-area">
+      <input type="text" placeholder="Votre message" [(ngModel)]="content" (keyup.enter)="send()" />
+      <button (click)="send()">Envoyer</button>
+    </div>
+  </div>
+</div>
